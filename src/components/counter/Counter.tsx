@@ -1,41 +1,62 @@
-import React, { useState } from 'react';
-import styles from './Button.module.css'
+import React, { useState } from "react";
 
-interface Props {
+const initialTeams = [
+    { name: "Real Madrid", points: 72 },
+    { name: "Barcelona", points: 68 },
+    { name: "Atletico Madrid", points: 65 },
+    { name: "Sevilla", points: 59 },
+];
+
+interface Team {
+    name: string;
+    points: number;
 }
 
-const Counter: React.FC<Props> = () => {
-    const [count, setCount] = useState(0);
+const TeamForm: React.FC = () => {
+    const [teams, setTeams] = useState<Team[]>(initialTeams);
+    const [name, setName] = useState<string>("");
+    const [points, setPoints] = useState<number>(0);
 
-    const [isHidden, setIsHidden] = useState(false);
-
-
-    const increaseCount = () => {
-        setCount(count + 1);
-    };
-
-    const decreaseCount = () => {
-        setCount(count - 1);
-    };
-
-    const toggleVisibility = () => {
-        setIsHidden(!isHidden);
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        const newTeam: Team = { name, points };
+        setTeams([...teams, newTeam]);
+        setName("");
+        setPoints(0);
     };
 
     return (
-        <div className={styles.countercontainer}>
-            {!isHidden && (
-                <div className={styles.counter}>
-                    <h1 >{count}</h1>
-                    <button onClick={increaseCount}>+</button>
-                    <button onClick={decreaseCount}>-</button>
-                    <button onClick={toggleVisibility}>Hide/Show</button>
-                </div>
+        <div>
+            <form onSubmit={handleSubmit}>
+                <label>Name:</label>
+                <input
+                    type="text"
+                    id="name"
+                    value={name}
+                    onChange={(event) => setName(event.target.value)}
+                />
 
-            )}
-            {isHidden && <button onClick={toggleVisibility}>Open</button>}
+                <label>Points:</label>
+                <input
+                    type="number"
+                    id="points"
+                    value={points}
+                    onChange={(event) => setPoints(Number(event.target.value))}
+                />
+
+                <button type="submit">Add team</button>
+            </form>
+
+            <h2>Teams:</h2>
+            <ul>
+                {teams.map((team, index) => (
+                    <li key={index}>
+                        {team.name} - {team.points} points
+                    </li>
+                ))}
+            </ul>
         </div>
     );
 };
 
-export default Counter;
+export default TeamForm;

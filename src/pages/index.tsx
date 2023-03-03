@@ -1,12 +1,11 @@
 import React from 'react';
-import Counter from '../components/counter/Counter'
+
+import VideoPlayer from "@/components/counter/VideoPlayer";
 
 
 const Home: React.FC = () => {
   return (
-      <div>
-        <Counter />
-      </div>
+      <VideoPlayer/>
   );
 };
 
